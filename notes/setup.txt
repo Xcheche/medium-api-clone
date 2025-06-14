@@ -1,0 +1,13 @@
+2025-06-13:
+ mkdir medium-api-clone && cd medium-api-clone.
+ mkdir src && cd src
+ npx gitignore python
+ mkdir  requirements folder - base.txt,production.txt,local.txt
+ python -m ven venv
+
+
+-r base.txt ( we did this inside local.txt to connect to base.txt)
+pip install -r requirements/local.txt 
+
+
+startproject config
