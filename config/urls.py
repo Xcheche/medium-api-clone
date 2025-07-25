@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    # this is the admin url, it will be used to access the admin panel
+    # it is set to a custom URL to enhance security
+    path(settings.ADMIN_URL, admin.site.urls),
+    # Add any additional URL patterns here
 ]

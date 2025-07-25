@@ -11,3 +11,7 @@ pip install -r requirements/local.txt
 
 
 startproject config
+
+
+==Generate good django secret key==
+python -c "import secrets; print(secrets.token_urlsafe(7))"
