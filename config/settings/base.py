@@ -16,7 +16,7 @@ env = environ.Env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'. renamed BASE_DIR to ROOT_DIR
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent  #3 folders up (src,config,settings)
+ROOT_DIR = Path(__file__).resolve().parent.parent  #2 folders up (config,settings)
 
 APP_DIR = ROOT_DIR / "core_apps"
 
