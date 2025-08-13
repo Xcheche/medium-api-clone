@@ -1,0 +1,49 @@
+# version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/local/django/Dockerfile
+    volumes:
+      - .:/app:z
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - mailhog
+    command: /start
+    networks:
+      - medium-api-clone
+  postgres:
+    image: postgres:14
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+    networks:
+      - medium-api-clone
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      - medium-api-clone
+
+volumes:
+  static_volume:
+  media_volume:
+  local_postgres_data:
+  local_postgres_data_backups:
+
+networks:
+  medium-api-clone:
+    driver: bridge

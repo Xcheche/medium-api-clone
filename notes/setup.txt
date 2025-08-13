@@ -17,3 +17,7 @@ startproject config
 python -c "import secrets; print(secrets.token_urlsafe(7))"
 
 ==Logger===
+===To confirm local.yml==
+docker compose -f local.yml config
+
+docker compose -f local.yml up --build -d --remove-orphans
