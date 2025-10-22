@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# TODO: change this to prod in production
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
@@ -84,7 +84,7 @@ TEMPLATES = [
         },
     },
 ]
-# TODO: change this to prod in production
+
 WSGI_APPLICATION = "config.wsgi.application"
 
 
