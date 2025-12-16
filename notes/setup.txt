@@ -21,3 +21,18 @@ python -c "import secrets; print(secrets.token_urlsafe(7))"
 docker compose -f local.yml config
 
 docker compose -f local.yml up --build -d --remove-orphans
+
+=====To build=============
+docker compose -f local.yml up --build
+docker compose -f local.yml up -d --remove-orphans
+========To run backup===============
+docker compose -f local.yml exec postgres backup
+
+====To see list of backups==========
+docker compose -f local.yml exec postgres backups
+
+
+
+========To restore backup===============
+docker compose -f local.yml exec postgres restore <backup-filename>
+

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#Backup db
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Get the directory of the current script
+working_dir="$(dirname ${0})"
+
+# Source the constants and messages scripts
+
+source "${working_dir}/_sourced/constants.sh"
+source "${working_dir}/_sourced/messages.sh"
+# Display a welcome message
+message_welcome "Backing up the '${POSTGRES_DB}' database..."
+# Check if POSTGRES_USER is 'postgres
+if [[ "${POSTGRES_USER}" == "postgres" ]]; then
+  message_error "Backing up as 'postgres' user is not allowed. Assign 'POSTGRES_USER' env with another one and try again."
+  exit 1
+fi
+# Set PostgreSQL environment variables
+export PGHOST="${POSTGRES_HOST}"
+export PGPORT="${POSTGRES_PORT}"
+export PGUSER="${POSTGRES_USER}"
+export PGPASSWORD="${POSTGRES_PASSWORD}"
+export PGDATABASE="${POSTGRES_DB}"
+
+# Create backup filename with timestamp
+backup_filename="${BACKUP_FILE_PREFIX}_$(date +'%Y_%m_%dT%H_%M_%S').sql.gz"
+
+# Perform the database backup and compress it
+pg_dump | gzip > "${BACKUP_DIR_PATH}/${backup_filename}"
+
+# Display success message
+message_success "'${POSTGRES_DB}' database backup '${backup_filename}' has been created successfully and place in '${BACKUP_DIR_PATH}'"
