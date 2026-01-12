@@ -91,14 +91,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME":  "mydatabase",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME":  "mydatabase",
+#     }
+# }
+DATABASES = {"default": env.db("DATABASE_URL")}
 
-#DATABASES = {"default": env.db("DATABASE_URL")}
 
 
 PASSWORD_HASHERS = [
@@ -161,7 +161,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #Any  url with this will have cors headers added to it
 CORS_URLS_REGEX = r"^api/.*$"  # Adjust this regex to match your allowed origins
 
-
+# Custom user model
+AUTH_USER_MODEL = "users.User"
 #Logging configuration
 LOGGING = {
     "version": 1,
