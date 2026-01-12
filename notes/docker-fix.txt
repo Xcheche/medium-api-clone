@@ -1,0 +1,37 @@
+# Docker Network / DNS Fix for Linux
+
+If your Docker container cannot access the internet (pip, apt, curl) but your host internet works, follow these steps:
+
+1. Stop and disable systemd-resolved:
+   sudo systemctl stop systemd-resolved
+   sudo systemctl disable systemd-resolved
+
+2. Replace /etc/resolv.conf with real DNS:
+   sudo rm -f /etc/resolv.conf
+   sudo tee /etc/resolv.conf <<EOF
+   nameserver 8.8.8.8
+   nameserver 1.1.1.1
+   EOF
+
+3. Lock the file so it is not overwritten:
+   sudo chattr +i /etc/resolv.conf
+
+4. Restart Docker:
+   sudo systemctl restart docker
+
+5. Test connectivity inside Docker:
+   docker run --rm busybox wget -qO- https://pypi.org | head
+   # Expected: prints HTML → container can reach internet
+
+6. Optional: upgrade pip inside Docker (recommended):
+   RUN python -m pip install --upgrade pip setuptools wheel
+   # Place this before installing packages
+
+Notes:
+- Ping inside Docker may fail; this is normal — TCP traffic matters
+- To restore systemd-resolved:
+   sudo chattr -i /etc/resolv.conf
+   sudo systemctl enable systemd-resolved
+   sudo systemctl start systemd-resolved
+
+This fix works for pip, apt, npm, Kafka, and any Docker container requiring internet.
