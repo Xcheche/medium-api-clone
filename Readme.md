@@ -1,6 +1,6 @@
 # Medium API Clone
 
-![License: MIT](https://img.shields.io/github/license/xcheche/)
+![License: MIT](https://img.shields.io/github/license/xcheche/medium-api-clone)
 
 Medium API Clone
 
@@ -49,12 +49,6 @@ cd medium-api-clone
 
 #Set up environment variables (create .env file):
 
-DJANGO_SECRET_KEY=""
-POSTGRES_USER=""
-POSTGRES_PASSWORD=""
-POSTGRES_DB=medium
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
 
 
 Run with Docker:
