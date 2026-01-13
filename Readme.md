@@ -1,6 +1,5 @@
 # Medium API Clone
-
-![License: MIT](https://img.shields.io/github/license/xcheche/medium-api-clone)
+![License: MIT](https://img.shields.io/github/license/xcheche/medium-api-clone?cacheSeconds=1)
 
 
 A production-ready Medium API clone built with Django and Docker.
