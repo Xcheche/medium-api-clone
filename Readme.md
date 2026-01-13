@@ -52,4 +52,4 @@ Swagger docs: http://localhost:8000/swagger/
 ReDoc docs: http://localhost:8000/redoc/
 
 License
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the MIT License. See the [MIT License](LICENSE) file for details.
