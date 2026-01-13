@@ -50,6 +50,7 @@ Admin panel: http://localhost:8000/supersecret/
 Swagger docs: http://localhost:8000/swagger/
 
 ReDoc docs: http://localhost:8000/redoc/
+## License
 
-License
-This project is licensed under the MIT License. See the [MIT License](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE) – see the file for details.
+
