@@ -51,3 +51,13 @@ admin.site.site_header = "MEDIUM API Admin"
 admin.site.site_title = "MEDIUM API Admin Portal"
 
 admin.site.index_title = "Welcome to MEDIUM API Portal"
+
+
+"""
+Available endpoints:
+
+Swagger Docs: http://localhost:8000/swagger/
+ReDoc: http://localhost:8000/redoc/
+Admin Panel: http://localhost:8000/supersecret/
+
+"""

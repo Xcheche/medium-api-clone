@@ -15,10 +15,13 @@ import environ
 env = environ.Env()
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'. renamed BASE_DIR to ROOT_DIR
+
 ROOT_DIR = Path(__file__).resolve().parent.parent  #2 folders up (config,settings)
+PROJECT_DIR = ROOT_DIR.parent  # Project root (3 folders up - the actual /app directory)
 
 APP_DIR = ROOT_DIR / "core_apps"
+# django-extensions: allow runscript to find scripts in core_apps/scripts
+RUNSCRIPT_SCRIPT_DIRS = [str(PROJECT_DIR / "core_apps" / "scripts")]
 
 
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
@@ -33,7 +36,9 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites", # for django-allauth
+    "django_extensions",
 ]
+
 
 # Third-party apps
 THIRD_PARTY_APPS = [
@@ -44,6 +49,8 @@ THIRD_PARTY_APPS = [
     "django_countries",
     "phonenumber_field",
     "drf_yasg",
+    "djcelery_email",
+
     ]
 #Core apps
 LOCAL_APPS = [
@@ -91,12 +98,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME":  "mydatabase",
-#     }
-# }
+
 DATABASES = {"default": env.db("DATABASE_URL")}
 
 
@@ -142,17 +144,18 @@ USE_TZ = True
 SITE_ID = 1  # for django-allauth
 
 ADMIN_URL = "supersecret/" # for  admin to be accessed at /supersecret/ to notify admin of any security issues
+#Usage http://localhost:8000/supersecret/ instead of http://localhost:8000/admin/ to access the admin panel
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "staticfiles/"
-STATIC_ROOT = str(ROOT_DIR / "staticfiles")
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = str(PROJECT_DIR / "staticfiles")
 
 
 #Media config
-MEDIA = "/mediafiles/"
-MEDIA_ROOT = str(ROOT_DIR / "mediafiles")
+MEDIA_URL = "/mediafiles/"
+MEDIA_ROOT = str(PROJECT_DIR / "mediafiles")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -163,6 +166,25 @@ CORS_URLS_REGEX = r"^api/.*$"  # Adjust this regex to match your allowed origins
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
+
+
+#Celery Configuration
+
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://redis:6379/0")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://redis:6379/0")
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+# Set timezone for Celery to match Django's timezone settings
+if USE_TZ:
+    CELERY_TIMEZONE = TIME_ZONE
+else:
+    CELERY_TIMEZONE = "UTC"
+
+CELERY_RESULT_BACKEND_MAX_RETRIES =10
+CELERY_TASK_SEND_SENT_EVENT = True
+
+
 #Logging configuration
 LOGGING = {
     "version": 1,

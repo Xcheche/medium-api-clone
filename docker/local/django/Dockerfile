@@ -38,10 +38,20 @@ RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
 #Service script
+# We have 3 services: django, celery worker and celery flower. Each service has its own start script. We copy all 3 scripts to the image and make them executable. The entrypoint script will decide which start script to run based on the BUILD_ENV variable.
 COPY ./docker/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
+COPY ./docker/local/django/celery/worker/start /start-celeryworker
+RUN sed -i 's/\r$//g' /start-celeryworker
+RUN chmod +x /start-celeryworker
 
+COPY ./docker/local/django/celery/flower/start /start-flower
+RUN sed -i 's/\r$//g' /start-flower
+RUN chmod +x /start-flower
+
+
+# Copy the rest of the application code
 COPY . ${APP_HOME}
 ENTRYPOINT [ "/entrypoint" ]

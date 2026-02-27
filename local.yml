@@ -1,6 +1,9 @@
 # version: '3.8'
 
 services:
+  # =====================================================
+  # Django API Service - Main application server
+  # =====================================================
   api:
     build:
       context: .
@@ -12,14 +15,19 @@ services:
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - postgres
       - mailhog
+      - redis
     command: /start
     networks:
       - medium-api-clone
+
+  # =====================================================
+  # PostgreSQL Database Service
+  # =====================================================
   postgres:
     image: postgres:14
     volumes:
@@ -30,6 +38,10 @@ services:
     networks:
       - medium-api-clone
 
+  # =====================================================
+  # MailHog Service - Email testing tool
+  # Access at: http://localhost:8025
+  # =====================================================
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog
@@ -37,13 +49,88 @@ services:
       - "8025:8025"
     networks:
       - medium-api-clone
+  #===============================================
+  #Redis Service - Caching and Celery broker
+  #======================================================
+  redis:
+    image: redis:7-alpine
+    networks:
+      - medium-api-clone
 
+  #===============================================
+  #Celery service worker - Asynchronous task processing
+  #======================================================
+  celery:
+    build:
+      context: .
+      dockerfile: ./docker/local/django/Dockerfile
+    command: /start-celeryworker
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    depends_on:
+      - redis
+      - postgres
+      - mailhog
+    networks:
+      - medium-api-clone
+
+  #===============================================
+  #Flower service - Celery monitoring tool
+  #======================================================
+  flower:
+    build:
+      context: .
+      dockerfile: ./docker/local/django/Dockerfile
+    command: /start-flower
+    volumes:
+      - flower_data:/app
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    depends_on:
+      - redis
+      - postgres
+      - mailhog
+    ports:
+      - "5555:5555"
+    networks:
+      - medium-api-clone
+
+  # =====================================================
+  # Nginx Service - Reverse proxy and static file server
+  # Access at: http://localhost:8080
+  # =====================================================
+  nginx:
+    restart: always
+    depends_on:
+      - api
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - medium-api-clone
+
+# =====================================================
+# Docker Volumes - Persistent data storage
+# =====================================================
 volumes:
   static_volume:
   media_volume:
-  local_postgres_data:
-  local_postgres_data_backups:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+  flower_data: {}
 
+# =====================================================
+# Docker Networks - Service communication
+# =====================================================
 networks:
   medium-api-clone:
     driver: bridge
