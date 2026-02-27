@@ -1,6 +1,6 @@
 # Medium API Clone
 
-![License: MIT](https://img.shields.io/github/license/xcheche/medium-api-clone)
+![License: MIT](https://img.shields.io/github/license/xcheche/medium-api-clone?cacheSeconds=1)
 
 A production-ready Medium API clone built with Django and Docker.
 
@@ -26,7 +26,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/your-username/medium-api-clone.git
 cd medium-api-clone
-Set up environment variables (create .env file):
+Set up environment variables (create a .env file).
 
 Run with Docker:
 
@@ -52,4 +52,5 @@ Swagger docs: http://localhost:8000/swagger/
 ReDoc docs: http://localhost:8000/redoc/
 
 License
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the MIT License.
+
