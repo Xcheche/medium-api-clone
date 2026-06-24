@@ -41,6 +41,7 @@
 # Define the web service name for reuse
 WEB_SERVICE_NAME = api
 
+
 build:
 	@echo "🏗️  Building Docker containers..."
 	docker compose -f local.yml up --build -d --remove-orphans
@@ -60,6 +61,11 @@ show-logs:
 show-logs-api:
 	@echo "📋 Showing API logs..."
 	docker compose -f local.yml logs $(WEB_SERVICE_NAME)
+
+check-migration:
+	@echo "🗂️  checking before  migrations..."
+	docker compose -f local.yml run --rm $(WEB_SERVICE_NAME) python manage.py makemigrations --check --dry-run
+
 
 makemigrations:
 	@echo "🗂️  Creating database migrations..."
@@ -136,3 +142,8 @@ run-script:
 	@echo "📜 Running custom script..."
 	docker compose -f local.yml exec $(WEB_SERVICE_NAME) python manage.py runscript $(runscript)	
 	#usage: make run-script runscript=your_script_name (without .py extension)	
+
+Verify-package:
+	@echo "🔍 Verifying if django-phonenumber-field is installed..."
+	docker compose -f local.yml run --rm api pip show django-phonenumber-field
+
