@@ -120,6 +120,27 @@ services:
     networks:
       - medium-api-clone
 
+  #====================================================
+  # PgAdmin Service - PostgreSQL management tool hard coded credentials for local development
+  # Access at: http://localhost:8081
+  #====================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - medium-api-clone
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: strongpassword123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
 # =====================================================
 # Docker Volumes - Persistent data storage
 # =====================================================
@@ -129,6 +150,8 @@ volumes:
   local_postgres_data: {}
   local_postgres_data_backups: {}
   flower_data: {}
+  pgadmin_data: {}
+
 
 # =====================================================
 # Docker Networks - Service communication

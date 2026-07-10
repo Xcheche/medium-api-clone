@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ 
 env = environ.Env()
+from datetime import timedelta
 
 
 
@@ -50,6 +51,13 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "drf_yasg",
     "djcelery_email",
+    ## Auth
+    "allauth",
+    "rest_framework.authtoken",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
 
     ]
 #Core apps
@@ -207,3 +215,47 @@ LOGGING = {
         "handlers": ["console"]
     }
 }
+
+#=========RESTFRAMEWORK============
+REST_FRAMEWORK ={
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+
+}
+
+#==========SIMPLE JWT CONFIGURATION=============
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "SIGNING_KEY": env("SIGNING_KEY"),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+}
+
+#==========REST AUTH CONFIGURATION=============
+REST_AUTH  = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "medium_api_clone_token",  # Name of the cookie to store the JWT
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "core_apps.users.serializers.CustomRegisterSerializer",  # Custom serializer for registration
+}
+
+#==========AUTHENTICATION BACKENDS CONFIGURATION=============   
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",  # for django-allauth
+    "django.contrib.auth.backends.ModelBackend",  # default
+]
+
+#==========ALLAUTH CONFIGURATION=============
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use email for authentication
+ACCOUNT_EMAIL_REQUIRED = True  # Require email for registration
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Require email verification for registration other options(none,optional,mandatory)
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Allow browser-based confirmation links to verify immediately
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Number of days before email confirmation expires  
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # Disable username field
+ACCOUNT_USERNAME_REQUIRED = False  # Disable username field

@@ -46,6 +46,10 @@ build:
 	@echo "🏗️  Building Docker containers..."
 	docker compose -f local.yml up --build -d --remove-orphans
 
+config:
+	@echo "🔧 Displaying docker-compose configuration..."
+	docker compose -f local.yml config
+
 up:
 	@echo "🚀 Starting Docker containers..."
 	docker compose -f local.yml up -d
@@ -53,6 +57,11 @@ up:
 down:
 	@echo "🛑 Stopping Docker containers..."
 	docker compose -f local.yml down
+
+restart:
+	@echo "🔄 Restarting Docker containers..."
+	docker compose -f local.yml down
+	docker compose -f local.yml up -d
 
 show-logs:
 	@echo "📋 Showing logs for all services..."

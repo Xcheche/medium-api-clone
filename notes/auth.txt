@@ -1,0 +1,39 @@
+#custom user model
+#custom user manager
+
+
+#django-allauth[is a complete authentication system that allows you to handle user registration, login, logout, password reset, and social account authentication. It is built on top of Django's authentication framework and provides a set of views, forms, and templates to handle common authentication tasks. It also supports third-party authentication providers like Google, Facebook, and Twitter.]
+https://django-allauth.readthedocs.io/en/latest/index.html
+#dj-rest-auth[A reusable Django app for token based authentication with django-rest-framework]
+https://dj-rest-auth.readthedocs.io/en/latest/index.html
+
+##drf-simplejwt[A JSON Web Token authentication plugin for the Django REST Framework. It provides a simple way to implement JWT authentication in your Django applications, allowing you to secure your APIs and manage user authentication using tokens.]
+https://github.com/SimpleJWT/django-rest-framework-simplejwt
+
+##Generate signing key for JWT
+python -c "import secrets; print(secrets.token_urlsafe(38))"
+
+
+
+## 🔐 Authentication Stack Overview
+
+### django-allauth
+
+Provides the core authentication logic for the application.
+It handles user registration, login, logout, email verification, password reset, and optional social authentication.
+All authentication rules and workflows are managed here.
+
+---
+
+### dj-rest-auth
+
+Exposes django-allauth’s functionality as RESTful API endpoints.
+It allows frontend clients (such as web or mobile apps) to interact with authentication features using JSON requests instead of HTML forms.
+It acts as a bridge between django-allauth and Django REST Framework.
+
+---
+
+### djangorestframework-simplejwt
+
+Implements JSON Web Token (JWT)–based authentication.
+It generates access and refresh tokens after successful login, enabling secure, stateless authentication for API requests.
