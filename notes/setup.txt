@@ -2,7 +2,8 @@
  mkdir medium-api-clone && cd medium-api-clone.
  mkdir src && cd src
  npx gitignore python
- mkdir  requirements folder - base.txt,production.txt,local.txt
+ mkdir -p requirements && touch requirements/base.txt requirements/local.txt requirements/production.txt
+
  python -m ven venv
 
 
