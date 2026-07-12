@@ -110,5 +110,3 @@ With nginx:
 - Refresh Token: http://localhost:8080/api/v1/auth/token/refresh/
 - Logout: http://localhost:8080/api/v1/auth/logout/
 """
-
-#Chore: Add JWT authentication and admin site branding ,tested auth endpoints with Postman, and updated README.md with new auth endpoints
