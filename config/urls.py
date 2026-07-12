@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 
+# For the admin site branding, we need to import the admin module from config/admin.py
+import config.admin  # noqa: F401
+
 #==Api documentation imports==
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -60,11 +63,11 @@ urlpatterns = [
     path("api/v1/auth/password/reset/confirm/<uidb64>/<token>/", PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
 ]
 
-admin.site.site_header = "MEDIUM API Admin"
+# admin.site.site_header = "MEDIUM API Admin"
 
-admin.site.site_title = "MEDIUM API Admin Portal"
+# admin.site.site_title = "MEDIUM API Admin Portal"
 
-admin.site.index_title = "Welcome to MEDIUM API Portal"
+# admin.site.index_title = "Welcome to MEDIUM API Portal"
 
 
 """
@@ -91,6 +94,9 @@ Auth available endpoints:
 - Password Reset: http://localhost:8000/api/v1/auth/password/reset/
 - Password Reset Confirm: http://localhost:8000/api/v1/auth/password/reset/confirm/<uidb64>/<token>/
 - Password Change: http://localhost:8000/api/v1/auth/password/change/
+- Logged  in User Details: http://localhost:8000/api/v1/auth/user/
+- Refresh Token: http://localhost:8000/api/v1/auth/token/refresh/
+- Logout: http://localhost:8000/api/v1/auth/logout/
 With nginx:
 - Registration: http://localhost:8080/api/v1/auth/registration/
 - Verify Email API: http://localhost:8080/api/v1/auth/registration/verify-email/
@@ -100,4 +106,9 @@ With nginx:
 - Password Reset: http://localhost:8080/api/v1/auth/password/reset/
 - Password Reset Confirm: http://localhost:8080/api/v1/auth/password/reset/confirm/<uidb64>/<token>/
 - Password Change: http://localhost:8080/api/v1/auth/password/change/
+- Logged  in User Details: http://localhost:8080/api/v1/auth/user/
+- Refresh Token: http://localhost:8080/api/v1/auth/token/refresh/
+- Logout: http://localhost:8080/api/v1/auth/logout/
 """
+
+#Chore: Add JWT authentication and admin site branding ,tested auth endpoints with Postman, and updated README.md with new auth endpoints

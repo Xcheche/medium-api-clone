@@ -20,6 +20,17 @@ from datetime import timedelta
 ROOT_DIR = Path(__file__).resolve().parent.parent  #2 folders up (config,settings)
 PROJECT_DIR = ROOT_DIR.parent  # Project root (3 folders up - the actual /app directory)
 
+
+
+
+
+
+#-------- Admin branding-----------------
+ADMIN_SITE_HEADER = 'Medium Clone'
+ADMIN_SITE_TITLE = 'Medium Clone'
+ADMIN_INDEX_TITLE = 'Welcome to Medium Clone'
+
+
 APP_DIR = ROOT_DIR / "core_apps"
 # django-extensions: allow runscript to find scripts in core_apps/scripts
 RUNSCRIPT_SCRIPT_DIRS = [str(PROJECT_DIR / "core_apps" / "scripts")]
@@ -87,7 +98,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [PROJECT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -158,6 +169,7 @@ ADMIN_URL = "supersecret/" # for  admin to be accessed at /supersecret/ to notif
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "/staticfiles/"
+STATICFILES_DIRS = [PROJECT_DIR / "static"]
 STATIC_ROOT = str(PROJECT_DIR / "staticfiles")
 
 
@@ -236,10 +248,8 @@ SIMPLE_JWT = {
 }
 
 #==========REST AUTH CONFIGURATION=============
-REST_AUTH  = {
-    "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "medium_api_clone_token",  # Name of the cookie to store the JWT
-}
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = "medium_api_clone_token"  # Name of the cookie to store the JWT
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "core_apps.users.serializers.CustomRegisterSerializer",  # Custom serializer for registration
